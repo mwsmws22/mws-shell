@@ -37,7 +37,7 @@ fi
 PAGE_NUMBER=1
 
 # Process each image in the directory
-for IMAGE in "$DIRECTORY"/*.{jpg,jpeg,png}; do
+for IMAGE in $(ls "$DIRECTORY"/*.{jpg,jpeg,png} 2>/dev/null | sort -V); do
     # Skip if no matching files are found
     [ -e "$IMAGE" ] || continue
 
@@ -75,8 +75,8 @@ for IMAGE in "$DIRECTORY"/*.{jpg,jpeg,png}; do
     fi
 
     # Split the image into two equal parts
-    magick "$IMAGE" -crop "${HALF_WIDTH}x${HEIGHT}+0+0" "$LEFT_PAGE"
-    magick "$IMAGE" -crop "${HALF_WIDTH}x${HEIGHT}+${HALF_WIDTH}+0" "$RIGHT_PAGE"
+    magick "$IMAGE" -crop "${HALF_WIDTH}x${HEIGHT}+${HALF_WIDTH}+0" "$LEFT_PAGE"
+    magick "$IMAGE" -crop "${HALF_WIDTH}x${HEIGHT}+0+0" "$RIGHT_PAGE"
 
     # Remove the original cropped image
     rm "$IMAGE"
